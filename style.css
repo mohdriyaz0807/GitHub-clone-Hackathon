@@ -1,0 +1,118 @@
+.col {
+    text-align: center;
+}
+body {
+    background-image: url('https://img.rawpixel.com/s3fs-private/rawpixel_images/website_content/v363-aew-47-newyearsalebadge_2.jpg?w=1200&h=1200&dpr=1&fit=clip&crop=default&fm=jpg&q=75&vib=3&con=3&usm=15&cs=srgb&bg=F4F4F3&ixlib=js-2.2.1&s=bf0ebd94d6077916c91f354edd0cc9b7');
+}
+
+.search {
+    background-image: linear-gradient(225deg,gray,rgb(51, 46, 46),grey);
+    box-shadow: 5px 5px gray;
+    border-radius: 10px;
+    margin-top: 10px;
+    padding-bottom: 10px;
+}
+label{
+    font-size: xx-large;
+    font-style: oblique;
+    font-weight: bolder;
+    color: white;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding: 5px;
+}
+#btn{
+    font-size: x-large;
+    border-radius: 10px;
+    padding:1px 10px;
+    background-color: honeydew;
+}
+.btn:hover{
+    transform: scale(1.3,1.2);
+}
+#btn:hover{
+    background-color: rgb(56, 109, 255);
+}
+#inp:hover{
+    background-color: rgb(129, 186, 201);
+    border: 1.5px solid rgba(22, 164, 247, 0.726);
+    box-shadow: 3px lightcyan;
+}
+#inp:focus{
+    transform: scale(1.1);
+    border: 2.5px solid blue;
+}
+#inp {
+    color: black;
+    margin-bottom: 10px;
+    width: 50%;
+    height: 40px;
+    font-size: x-large;
+    font-weight: bolder;
+    border-radius: 10px;
+}
+.row{
+    text-align: center;
+}
+.Avatar{
+    width: 50%;
+}
+.imgf{
+    width: 50%;
+}
+.main{
+    color:white;
+    background-image: linear-gradient(125deg,gray,rgb(51, 46, 46),grey);
+    box-shadow: 5px 5px gray;
+    border-radius: 10px;
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
+#div2,#div3{
+    text-align: center;
+    padding: 15px;
+}
+.divf2{
+    background-image: linear-gradient(60deg,gray,rgb(51, 46, 46),grey);
+    border-radius: 10px;
+    box-shadow:5px silver;
+    padding: 10px;
+    color: black;
+}
+#col2,.reponame{
+    font-weight: bold;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: larger;
+}
+#row1{
+    padding: 10px;
+    background-color: rgb(202, 202, 202);
+    margin: 5px 0;
+    border: 1px solid darkslategrey;
+    border-radius: 10px;
+    font-size: medium;
+}
+#div1text{
+    text-align: center;
+    font-size: x-large;
+    font-weight: bolder;
+    font-family: 'Courier New', Courier, monospace;
+}
+.repo{
+    margin-top: 15px;
+}
+#div3{
+    margin-top: 25px;
+    padding-top: 20px;
+}
+.des,.date{
+    font-size: small;
+}
+.date{
+    margin-top: 15px;
+}
+@media only screen and (max-width: 767px) {
+    .date{
+        border-top: 1px solid gray;
+        padding-top: 5px;
+    }
+    }
