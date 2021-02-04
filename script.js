@@ -9,7 +9,6 @@ $("#inp").on('keyup', function (event) {
 })
 
 var div1 = create('div', '', 'main container', 'main1', '')
-var divf2 = create('div', '', 'divf2', 'divf2', '')
 
 function display() {
 
@@ -70,6 +69,7 @@ function display() {
         }`))
 
 
+        var divf2 = create('div', '', 'divf2', 'divf2', '')
         function show(api, text) {
             return function () {
                 document.getElementById('divf2').innerHTML = ""
