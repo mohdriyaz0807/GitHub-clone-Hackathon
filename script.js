@@ -1,22 +1,51 @@
+var div1 = create('div', '', 'main container', 'main1', '')
 var searchvalue = document.getElementById('inp')
 var btn = document.getElementById('btn')
+btn.addEventListener('click', function(){searchuser(`"${searchvalue.value}"`)})
 
-btn.addEventListener('click', display)
 $("#inp").on('keyup', function (event) {
     if (event.keyCode === 13) {
-        display()
+        searchuser(`"${searchvalue.value}"`)
     }
 })
 
-var div1 = create('div', '', 'main container', 'main1', '')
+var searchcontainer = create('div', '', 'searchcontainer', 'searchcontainer', '')
 
-function display() {
+function searchuser(key){
+    document.getElementById('displaycontainer').innerHTML = ""
+    document.getElementById('searchcontainer').innerHTML = ""
 
-    document.getElementById('main1').innerHTML = ""
 
-    fetch(`https://api.github.com/users/${
-        searchvalue.value
-    }`).then((response) => {
+    if(key!==''){
+    fetch(`https://api.github.com/search/users?q=${key}&client_id=2a5d4ab56cd1f1869be8&client_secret=0d6b65a584b808cc4c234e2846776fd234d02cbe`)
+    .then((res)=>{
+        return res.json()
+    }).then((data)=>{
+        let search = create('div','','row','searchrow','')
+        data.items.map((ele)=>{
+            let searchcard = create('div','','usercol col-sm-12 col-md-4',`col-${ele.id}`,'')
+            let img=create('img', '', 'Avatar Tag', `img-${ele.id}`, `display("${ele.login}")`)
+            img.setAttribute('src', ele.avatar_url)
+            let name=create('h2', ele.login, 'name', `name-${ele.id}`, '')
+            searchcard.append(img,name)
+            search.append(searchcard)
+        })
+        searchcontainer.append(search)
+    }).catch((err) => {
+        console.log(err);
+    })
+}
+}
+
+var displaycontainer = create('div', '', 'displaycontainer', 'displaycontainer', '')
+
+function display(value) {
+
+    document.getElementById('searchcontainer').innerHTML = ""
+    document.getElementById('displaycontainer').innerHTML = ""
+
+    fetch(`https://api.github.com/users/${value}?client_id=2a5d4ab56cd1f1869be8&client_secret=0d6b65a584b808cc4c234e2846776fd234d02cbe`)
+    .then((response) => {
         return response.json()
     }).then((result) => {
         var divrow = create('div', '', 'row', 'divrow', '')
@@ -54,7 +83,7 @@ function display() {
         span1.append(follower, following)
         div2.append(img, name, repo)
         divrow.append(div2, div3)
-        div1.append(divrow)
+        displaycontainer.append(divrow)
 
         document.getElementById('follower').addEventListener('click', show(`${
             result.followers_url
@@ -82,8 +111,9 @@ function display() {
                         var row = create('div', '', 'row', 'row1', '')
                         var col1 = create('div', '', 'col-md-4 col-sm-12', 'col1', '')
                         if (ele.avatar_url) {
-                            var img = create('img', '', 'imgf', `img${i}`, '')
+                            var img = create('img', '', 'imgf Tag', `img${i}`, '')
                             img.setAttribute('src', ele.avatar_url)
+                            img.setAttribute('onclick', `display("${ele.login}")`)
                             col1.append(img)
                         }
                         if (ele.name) {
@@ -129,7 +159,7 @@ function display() {
             }
         }
 
-        div1.append(divf2)
+        displaycontainer.append(divf2)
         searchvalue.value = ""
 
     }).catch((err) => {
@@ -137,6 +167,7 @@ function display() {
     })
 }
 
+div1.append(searchcontainer,displaycontainer)
 document.body.append(div1)
 
 function create(tagname, text = '', classname = '', id = '', click = '') {
