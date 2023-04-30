@@ -1,56 +1,44 @@
 .col {
     text-align: center;
 }
-body {
-    background-image: url('https://img.rawpixel.com/s3fs-private/rawpixel_images/website_content/v363-aew-47-newyearsalebadge_2.jpg?w=1200&h=1200&dpr=1&fit=clip&crop=default&fm=jpg&q=75&vib=3&con=3&usm=15&cs=srgb&bg=F4F4F3&ixlib=js-2.2.1&s=bf0ebd94d6077916c91f354edd0cc9b7');
+.logo{
+    width: fit-content;
+    margin: 25px auto;
 }
-
 .search {
-    background-image: linear-gradient(225deg,gray,rgb(51, 46, 46),grey);
-    box-shadow: 5px 5px gray;
     border-radius: 10px;
     margin-top: 10px;
     padding-bottom: 10px;
 }
 label{
-    font-size: x-large;
-    font-style: oblique;
-    font-weight: bolder;
-    color: white;
+    font-size: xx-large;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     padding: 5px;
 }
 #btn{
-    font-size: large;
-    border-radius: 10px;
-    padding:1px 10px;
-    background-color: honeydew;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 16px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    background-color: #000000;
+    color: #fff;
 }
 .Tag:hover{
     transform: scale(1.2,1.2);
     cursor: pointer;
 }
-.btn:hover{
-    transform: scale(1.3,1.2);
-}
 #btn:hover{
-    background-color: rgb(14, 89, 48);
-    color:white
-}
-#inp:hover{
-    border: 5px solid #00582f;
+    background-color: #515151;
 }
 #searchrow .usercol{
     padding:5%
 }
 #inp {
-    color: #040472;
     margin-bottom: 10px;
     width: 50%;
     height: 40px;
-    font-size: x-large;
-    font-weight: bolder;
-    border-radius: 10px;
 }
 .row{
     text-align: center;
