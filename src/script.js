@@ -1,50 +1,77 @@
 var div1 = create('div', '', 'main container', 'main1', '')
-var searchvalue = document.getElementById('inp')
-var btn = document.getElementById('btn')
-btn.addEventListener('click', function(){searchuser(`"${searchvalue.value}"`)})
+const url = new URL(window.location.href);
+var query = localStorage.getItem('query')
+var searchvalue = ""
+var btn = document.getElementById('button')
+btn.addEventListener('click', function(){
+    searchuser(`"${searchvalue}"`)
+    localStorage.setItem('query',searchvalue);
+})  
 
-$("#inp").on('keyup', function (event) {
-    if (event.keyCode === 13) {
-        searchuser(`"${searchvalue.value}"`)
+const inputField = document.getElementById('input');
+
+if(query){
+    searchvalue = query;
+    inputField.value = query
+    searchuser(query);
+    btn.removeAttribute("disabled");
+} else {
+    searchvalue = inputField.value
+}
+
+inputField.addEventListener("input", () => {
+    searchvalue = inputField.value.trim()
+    if (inputField.value.trim() !== "") {
+        btn.removeAttribute("disabled");
+    } else {
+        btn.setAttribute("disabled", true);
     }
-})
+});
+
+inputField.addEventListener("keyup", (event) => {
+    if (event.key === "Enter" && searchvalue.trim()) {
+        localStorage.setItem('query',searchvalue);
+        searchuser(`"${searchvalue}"`)
+    }
+});
+
 
 var searchcontainer = create('div', '', 'searchcontainer', 'searchcontainer', '')
+var displaycontainer = create('div', '', 'displaycontainer', 'displaycontainer', '')
 
 function searchuser(key){
-    document.getElementById('displaycontainer').innerHTML = ""
-    document.getElementById('searchcontainer').innerHTML = ""
 
+    if(displaycontainer) document.getElementById('displaycontainer').innerHTML = ""
+    if(searchcontainer) document.getElementById('searchcontainer').innerHTML = ""
 
     if(key!==''){
-    fetch(`https://api.github.com/search/users?q=${key}&client_id=2a5d4ab56cd1f1869be8&client_secret=0d6b65a584b808cc4c234e2846776fd234d02cbe`)
+    fetch(`https://api.github.com/search/users?q=${key}&client_id=${window.config.CLIENT_ID}&client_secret=${window.config.CLIENT_SECRET}`)
     .then((res)=>{
         return res.json()
     }).then((data)=>{
-        let search = create('div','','row','searchrow','')
+        let search = create('div','','row','result-row','')
         data.items.map((ele)=>{
-            let searchcard = create('div','','usercol col-sm-12 col-md-4',`col-${ele.id}`,'')
+            let searchcard = create('div','','usercol col-sm-12 col-md-6 col-lg-4',`col-${ele.id}`,'')
             let img=create('img', '', 'Avatar Tag', `img-${ele.id}`, `display("${ele.login}")`)
             img.setAttribute('src', ele.avatar_url)
-            let name=create('h2', ele.login, 'name', `name-${ele.id}`, '')
+            let name=create('h2', ele.login, 'name', `name-${ele.id}`, `display("${ele.login}")`)
             searchcard.append(img,name)
             search.append(searchcard)
         })
         searchcontainer.append(search)
-    }).catch((err) => {
-        console.log(err);
+    }).catch((e) => {
+        console.error(e);
     })
 }
 }
 
-var displaycontainer = create('div', '', 'displaycontainer', 'displaycontainer', '')
 
 function display(value) {
 
     document.getElementById('searchcontainer').innerHTML = ""
     document.getElementById('displaycontainer').innerHTML = ""
 
-    fetch(`https://api.github.com/users/${value}?client_id=2a5d4ab56cd1f1869be8&client_secret=0d6b65a584b808cc4c234e2846776fd234d02cbe`)
+    fetch(`https://api.github.com/users/${value}?client_id=${window.config.CLIENT_ID}&client_secret=${window.config.CLIENT_SECRET}`)
     .then((response) => {
         return response.json()
     }).then((result) => {
@@ -52,27 +79,27 @@ function display(value) {
         var div2 = create('div', '', 'col-md-5 col-sm-12', 'div2', '')
         var img = create('img', '', 'Avatar', 'img', '')
         img.setAttribute('src', result.avatar_url)
-        var repo = create('div', 'Repositories <button type="button" id="repo" class="btn btn-primary" ><i class="fa fa-angle-double-down" aria-hidden="true"></i></button>', 'repo', 'repo', '')
+        var repo = create('div', 'Repositories <i class="fa fa-angle-double-right" aria-hidden="true"></i>', 'down-icon', 'repo', '')
         var div3 = create('div', '', 'col-md-7 col-sm-12', 'div3', '')
         var span1 = create('span', '', 'span1', 'span1', '')
         div3.append(span1)
-        var name = create('h3', `${result.name}<br>(${result.login})`, 'name', 'name', '')
-        var follower = create('h4', `Followers : ${result.followers} <button type="button" id="follower" class="btn btn-primary" ><i class="fa fa-angle-double-down" aria-hidden="true"></i></button>`, 'follower', 'follower', '')
-        var following = create('h4', `Following : ${result.following} <button type="button" id="following" class="btn btn-primary" ><i class="fa fa-angle-double-down" aria-hidden="true"></i></button>`, 'following', 'following', '')
+        var name = create('h3', `${result.name || ''}<br>(${result.login})`, 'name', 'name', '')
+        var follower = create('h4', `Followers : ${result.followers} <i class="fa fa-angle-double-right" aria-hidden="true"></i>`, 'down-icon', 'follower', '')
+        var following = create('h4', `Following : ${result.following} <i class="fa fa-angle-double-right" aria-hidden="true"></i>`, 'down-icon', 'following', '')
 
         var url = create('h5', `<a href=${result.html_url} target="_blank">View site..</a>`, 'url', 'url', '')
         div3.append(url)
-        if (result.location !== null) {
+        if (result.location) {
             var loc = create('h5', `<i class="fa fa-map-marker" aria-hidden="true"></i> ${result.location}`, 'loc', 'loc', '')
             div3.append(loc)
         }
-        if (result.blog !== null) {
+        if (result.blog) {
             var blog = create('h5', `<a href=${
                 result.blog
             } target="_blank"><i class="fa fa-link" aria-hidden="true"></i> ${result.blog}</a>`, 'blog', 'blog', '')
             div3.append(blog)
         }
-        if (result.twitter_username !== null) {
+        if (result.twitter_username ) {
             var twitter = create('h5', `<a href='https://twitter.com/${result.twitter_username}' target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i> ${
                 result.twitter_username
             }</a>`, 'twitter', 'twitter', '')
@@ -85,27 +112,51 @@ function display(value) {
         divrow.append(div2, div3)
         displaycontainer.append(divrow)
 
-        document.getElementById('follower').addEventListener('click', show(`${
+        document.getElementById('follower').addEventListener('click', showPeople(`${
             result.followers_url
         }?per_page=100`, 'Followers'))
-        document.getElementById('following').addEventListener('click', show(`${
+
+        document.getElementById('following').addEventListener('click', showPeople(`${
             result.url
         }/following?per_page=100`, 'Followings'))
+
         document.getElementById('repo').addEventListener('click', show(`${
             result.repos_url
-        }?per_page=100`, `Repositories<br>Total No. of public repos :${
-            result.public_repos
-        }`))
+        }?per_page=100` ))
 
 
         var divf2 = create('div', '', 'divf2', 'divf2', '')
-        function show(api, text) {
+
+        function showPeople(api, text){
             return function () {
                 document.getElementById('divf2').innerHTML = ""
                 fetch(api).then((get) => {
                     return get.json()
                 }).then((res) => {
-                    var divf1 = create('div', text, 'container div1', 'div1text', '')
+                    var title = create('div', text, '','div1text',)
+                    var divf1 = create('div', '', 'row', '', '')
+                    res.map((ele)=>{
+                        let searchcard = create('div','','usercol col-sm-12 col-md-6 col-lg-4',`col-${ele.id}`,'')
+                        let img=create('img', '', 'Avatar Tag', `img-${ele.id}`, `display("${ele.login}")`)
+                        img.setAttribute('src', ele.avatar_url)
+                        let name=create('h2', ele.login, 'name', `name-${ele.id}`, `display("${ele.login}")`)
+                        searchcard.append(img,name)
+                        divf1.append(searchcard)
+                    })
+                    divf2.append(title, divf1)
+                }).catch((e) => {
+                    console.error(e);
+                })
+            }
+        }
+
+        function show(api) {
+            return function () {
+                document.getElementById('divf2').innerHTML = ""
+                fetch(api).then((get) => {
+                    return get.json()
+                }).then((res) => {
+                    var divf1 = create('div', `Repositories<br>Total No. of public repos :${result.public_repos}`, 'container div1', 'div1text', '')
                     res.forEach(ele => {
                         i = 0;
                         var row = create('div', '', 'row', 'row1', '')
@@ -153,22 +204,22 @@ function display(value) {
                         i ++
                     });
                     divf2.append(divf1)
-                }).catch((err) => {
-                    console.log(err);
+                }).catch((e) => {
+                    console.error(e);
                 })
             }
         }
 
         displaycontainer.append(divf2)
-        searchvalue.value = ""
+        searchvalue = ""
 
-    }).catch((err) => {
-        console.log(err);
+    }).catch((e) => {
+        console.error(e);
     })
 }
 
 div1.append(searchcontainer,displaycontainer)
-document.body.append(div1)
+document.getElementsByClassName('column-2')[0].append(div1)
 
 function create(tagname, text = '', classname = '', id = '', click = '') {
     let tag = document.createElement(tagname);

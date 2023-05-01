@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://kit.fontawesome.com/66061bd58d.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="logo">
+			<div class="zoom">
+        <i class="fa fa-github" id="github-icon" style="font-size: 300px;"></i>
+			</div>
+    </div>
+    <div class='container search'>
+        <div class="row">
+            <div class="col-12 form">
+                <label for='input'>Search GitHub</label><br>
+                <input type="text" id='input' style="width: 400px;" autocomplete="off"><br>
+                <button type="button" id='button' disabled>Submit</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+    <script src="../config.js"></script>
+    <script>
+        const submitButton = document.getElementById("button");
+        const inputField = document.getElementById('input');
+        const logoContainer = document.getElementsByClassName("zoom");
+
+        inputField.addEventListener("input", () => {
+        if (inputField.value.trim() !== "") {
+            submitButton.removeAttribute("disabled");
+        } else {
+            submitButton.setAttribute("disabled", true);
+        }
+        });
+
+        const onSubmit = () => {
+            const q = inputField.value.trim();
+            logoContainer[0].style.transform = "scale(10)";
+            setTimeout(() => {
+                localStorage.setItem('query',q);
+                window.location.href = `${window.config.APP_URL}/src/search-result.html`
+            }, 500);
+        }
+
+        inputField.addEventListener("keyup", (event) => {
+        if (event.key === "Enter" && inputField.value.trim() !== '') {
+            onSubmit();
+        }
+        });
+        
+        submitButton.addEventListener("click", onSubmit);
+    </script>
+</body>
+
+</html>
